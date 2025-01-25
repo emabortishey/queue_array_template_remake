@@ -31,7 +31,7 @@ void Array<T>::append(Array& obj)
 {
     T buff;
 
-    for (int i = 0; i<obj.GetSize(); i++)
+    for (int i = 0; i<obj.size; i++)
     {
         buff = obj[i];
         append(buff);
@@ -57,7 +57,7 @@ void Array<T>::SetSize(int size_P, int grow)
 
     if (size_P>size)
     {
-        int diff = size_P - GetSize();
+        int diff = size_P - size;
 
         for (int i = 0; i < diff; i++) 
         {
@@ -69,7 +69,7 @@ void Array<T>::SetSize(int size_P, int grow)
     }
     else
     {
-        int diff = GetSize()-size_P;
+        int diff = size-size_P;
         int size_buff = 1;
         Node<T>* buff = head;
 
@@ -107,7 +107,7 @@ void Array<T>::RemoveAll()
 template<class T>
 const T Array<T>::GetAt(int index) const
 {
-    if (index < GetSize() && index >= 0)
+    if (index < size && index >= 0)
     {
         int size_buff = 0;
         Node<T>* buff = head;
@@ -131,7 +131,7 @@ const T Array<T>::GetAt(int index) const
 template<class T>
 void Array<T>::SetAt(int index, T elem)
 {
-    if (index < GetSize() && index >= 0)
+    if (index < size && index >= 0)
     {
         int size_buff = 0;
         Node<T>* buff = head;
