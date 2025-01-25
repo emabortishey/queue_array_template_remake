@@ -27,7 +27,7 @@ void Array<T>::append(T value)
 // они указывают на 1 обьект, поэтому оставила как есть
 
 template<class T>
-void Array<T>::Append(Array& obj)
+void Array<T>::append(Array& obj)
 {
     T buff;
 

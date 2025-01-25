@@ -34,7 +34,7 @@ public:
     Array() = default;
 
     void append(T value = T());
-    void Append(Array& obj);
+    void append(Array& obj);
     void removeLast();
     void print() const;
     bool search(T value) const;
