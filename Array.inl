@@ -65,7 +65,7 @@ void Array<T>::Append(Array& obj)
 // классах обычно есть атрибут размера, сделала так
 
 template<class T>
-int Array<T>::GetSize()
+int Array<T>::GetSize() const
 {
     return size;
 }
@@ -108,7 +108,7 @@ void Array<T>::SetSize(int size_P, int grow)
 // проверка на пустоту списка
 
 template<class T>
-bool Array<T>::IsEmpty()
+bool Array<T>::IsEmpty() const
 {
     return head == nullptr;
 }
@@ -125,7 +125,7 @@ void Array<T>::RemoveAll()
 // при отсутствии запрашиваемого индекса возвращает стандартное значение для типа данных шаблона
 
 template<class T>
-const T Array<T>::GetAt(int index)
+const T Array<T>::GetAt(int index) const
 {
     if (index < GetSize() && index >= 0)
     {
@@ -170,9 +170,9 @@ void Array<T>::SetAt(int index, T elem)
 // возвращение самого верхнего индекса (только ячейки, созданные как заполненные)
 
 template<class T>
-int Array<T>::GetUpperBound()
+int Array<T>::GetUpperBound() const
 {
-    Node<T>* buff = head;
+    Node<T> buff = head;
     int buff_indx = -1;
 
     while (buff->full != 0)

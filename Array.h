@@ -39,13 +39,13 @@ public:
     void removeLast();
     void print() const;
     bool search(T value) const;
-    int GetSize();
+    int GetSize() const;
     void SetSize(int size, int grow = 1);
-    bool IsEmpty();
+    bool IsEmpty() const;
     void RemoveAll();
-    const T GetAt(int index);
+    const T GetAt(int index) const;
     void SetAt(int index, T elem);
-    int GetUpperBound();
+    int GetUpperBound() const;
     void FreeExtra();
     T operator[](int indx);
     Node<T>& Get_data();
