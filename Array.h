@@ -33,8 +33,7 @@ private:
 public:
     Array() = default;
 
-    void append();
-    void append(T value);
+    void append(T value = T());
     void Append(Array& obj);
     void removeLast();
     void print() const;
