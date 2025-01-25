@@ -31,7 +31,7 @@ private:
     };
 
 public:
-    Array() : head(nullptr), tail(nullptr) {}
+    Array() = default;
 
     void append();
     void append(T value);
