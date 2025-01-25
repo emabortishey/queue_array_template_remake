@@ -39,7 +39,7 @@ public:
     void print() const;
     bool search(T value) const;
     int GetSize() const;
-    void SetSize(int size, int grow = 1);
+    void SetSize(int size, int grow =1);
     bool IsEmpty() const;
     void RemoveAll();
     const T GetAt(int index) const;
