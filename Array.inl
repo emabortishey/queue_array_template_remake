@@ -223,57 +223,58 @@ void Array<T>::RemoveAll()
 // т.к. оставила эту перегрузку для возвращения
 // значения data а не константной ссылки на эл.
 template<class T>
-const T Array<T>::GetAt(int index) const
+const T Array<T>::GetAt(int indx) const
 {
     // если индекс входит в диапазон
     // элементов строчки
-    if (index < size && index >= 0)
-    {
-        // переменная для нахождения
-        // нужного индекса
-        int size_buff = 0;
-        // переменная для пробега по строке
-        Node<T>* buff = head;
 
-        // пока не будет достигнут
-        // определенный индекс
-        while (size_buff != index)
-        {
-            size_buff++;
-            buff = buff->next;
-        }
-
-        // возвращаем найденное значение
-        return buff->data;
-    }
-    else
+    if (indx > size - 1 && indx < 0)
     {
-        return T();
+        throw out_of_range("\n\nIndex that you want to get at is out of range.\n\n");
     }
+
+    // переменная для нахождения
+    // нужного индекса
+    int size_buff = 0;
+    // переменная для пробега по строке
+    Node<T>* buff = head;
+
+    // пока не будет достигнут
+    // определенный индекс
+    while (size_buff != indx)
+    {
+        size_buff++;
+        buff = buff->next;
+    }
+
+    // возвращаем найденное значение
+    return buff->data;
 }
 
 // вставка элемента на какой-либо индекс
 
 template<class T>
-void Array<T>::SetAt(int index, T elem)
+void Array<T>::SetAt(int indx, T elem)
 {
+    if (indx > size - 1 && indx < 0)
+    {
+        throw out_of_range("\n\nIndex that you want to set at is out of range.\n\n");
+    }
+
     // также проверяем есть ли
     // переданный индекс в диапазоне
-    if (index < size && index >= 0)
+    int size_buff = 0;
+    Node<T>* buff = head;
+
+    // находим его в цикле
+    while (size_buff != indx)
     {
-        int size_buff = 0;
-        Node<T>* buff = head;
-
-        // находим его в цикле
-        while (size_buff != index)
-        {
-            size_buff++;
-            buff = buff->next;
-        }
-
-        // изменяем значение по индексу
-        buff->data = elem;
+        size_buff++;
+        buff = buff->next;
     }
+
+    // изменяем значение по индексу
+    buff->data = elem;
 }
 
 // возвращение самого верхнего индекса (только ячейки, созданные как заполненные)
@@ -349,6 +350,11 @@ void Array<T>::FreeExtra()
 template<class T>
 T Array<T>::operator[](int indx)
 {
+    if (indx > size - 1 && indx < 0)
+    {
+        throw out_of_range("\n\nIndex that you're seekin' for is out of range.\n\n");
+    }
+
     // переменная для нахождения нужного индекса
     int size_buff = 0;
     // переменная для пробега по массиву
@@ -369,6 +375,11 @@ T Array<T>::operator[](int indx)
 template<class T>
 T Array<T>::operator[](int indx) const
 {
+    if (indx > size - 1 && indx < 0)
+    {
+        throw out_of_range("\n\nIndex that you're seekin' for is out of range.\n\n");
+    }
+
     int size_buff = 0;
     Node<T>* buff = head;
 
@@ -386,6 +397,11 @@ T Array<T>::operator[](int indx) const
 template<class T>
 const Array<T>::Node<T>& Array<T>::Get_data()
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nArray is empty.\n\n");
+    }
+
     return *head;
 }
 
@@ -398,6 +414,11 @@ void Array<T>::InsertAt(int indx, T value)
     if (head == nullptr)
     {
         throw ContaineerIsEmpty("\n\nInsertion on the asked index is impossible. Array is empty.\n\n");
+    }
+
+    if (indx > size - 1 && indx <0)
+    {
+        throw out_of_range("\n\nIndex that you want to insert at is out of range.\n\n");
     }
 
     // создаем новый элемент
@@ -437,6 +458,11 @@ void Array<T>::DeleteAt(int indx)
     if (head == nullptr)
     {
         throw ContaineerIsEmpty("\n\nDeletion of the asked index is impossible. Array is empty.\n\n");
+    }
+
+    if (indx > size - 1 && indx < 0)
+    {
+        throw out_of_range("\n\nIndex that you want to delete is out of range.\n\n");
     }
 
     Node<T>* buff = head;
