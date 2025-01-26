@@ -338,7 +338,7 @@ void Array<T>::print() const
 
     cout << '\n';
 
-    while (current != nullptr)
+    while (current != nullptr && current->full != 0)
     {
         cout << current->data << " ";
         current = current->next;
