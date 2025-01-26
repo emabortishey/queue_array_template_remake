@@ -87,13 +87,23 @@ void Array<T>::SetSize(int size_P, int grow)
         int diff = size-size_P;
         int size_buff = 1;
         Node<T>* buff = head;
+        Node<T>* buff_deleteing;
 
         while (size_buff!=diff)
         {
             size_buff++;
             buff = buff->next;
         }
+
+        buff_deleteing = buff->next;
+
         buff->next = nullptr;
+
+        while (buff_deleteing != 0)
+        {
+            buff_deleteing = buff_deleteing->next;
+            delete buff_deleteing->prev;
+        }
     }
 
     size = size_P;
