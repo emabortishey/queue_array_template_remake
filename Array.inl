@@ -75,12 +75,12 @@ void Array<T>::append(T value)
         }
         // в случае если в строке есть элементы
         // у которых атрибут full = 0 то значение
-        // попадает в 1 первый такой атрибут
+        // попадает в первый такой атрибут
         else
         {
             Node<T>* Upper_bound = head;
 
-            for (int i = 0; i < GetUpperBound(); i++)
+            for (int i = 0; i <= GetUpperBound(); i++)
             {
                 Upper_bound = Upper_bound->next;
             }
@@ -115,13 +115,18 @@ int Array<T>::GetSize() const
     return size;
 }
 
-// метод увеличения/уменьшения размера на число гроу с каждым шагом
+// метод увеличения/уменьшения размера
 
 template<class T>
 void Array<T>::SetSize(int size_P, int grow_P)
 {
+    // первым делом гроу изменяется в зависимости
+    // с переданным параметром (даже если он был по умолчанию)
     grow = grow_P;
 
+    // если нвый размер больше прежнего
+    // то аппендится столько элементов, сколько
+    // составляет разница между размерами
     if (size_P>size)
     {
         int diff = size_P - size;
@@ -131,30 +136,46 @@ void Array<T>::SetSize(int size_P, int grow_P)
             append();
         }
     }
+    // если переданный размер меньше чем нынешний
     else
     {
+        // переменная для нахождения последнего
+        // элемента который находится на индексе
+        // равному новому размеру строки
         int size_buff = 1;
+        // переменная с помощью которой будет 
+        // произвдиться пробежка по элементам
         Node<T>* buff = head;
+        // переменная для удаления последующих элементов
         Node<T>* buff_deleteing;
 
+        // ищем нужный элемент
         while (size_buff!= size_P)
         {
             size_buff++;
             buff = buff->next;
         }
 
+        // присваиваем переменной для
+        // удаления значение
+        // найденного элемента
         buff_deleteing = buff->next;
 
+        // обнуляем в строке доступ к элементам
+        // после нужного индекса
         buff->next = nullptr;
 
+        // удаляем элементы которые мы урезали
         while (buff_deleteing->next != nullptr)
         {
             buff_deleteing = buff_deleteing->next;
             delete buff_deleteing->prev;
         }
 
+        // удаляем переменную для удаления
         delete buff_deleteing;
 
+        // меняем размер массива
         size = size_P;
     }
 }
@@ -172,8 +193,12 @@ bool Array<T>::IsEmpty() const
 template<class T>
 void Array<T>::RemoveAll()
 {
+    // переменная для удаления
     Node<T>* buff = head;
 
+    // удаляем все элементы по очереди кроме
+    // последнего, т.к. условие не позволит сделать
+    // это сразу в цикле
     while (buff->next != nullptr)
     {
         buff = buff->next;
@@ -181,10 +206,14 @@ void Array<T>::RemoveAll()
         delete buff->prev;
     }
 
+    // уже после цикла удаляем 
+    // нашу переменную (последний эл.)
     delete buff;
 
+    // обнуляем хед и тейл
     head = tail = nullptr;
 
+    // обнуляем размер
     size = 0;
 }
 
@@ -192,20 +221,31 @@ void Array<T>::RemoveAll()
 // и т.к. была задача сделать метод, я не стала использовать оператор и оставила так)
 // при отсутствии запрашиваемого индекса возвращает стандартное значение для типа данных шаблона
 
+// (решила не переделывать под перегрузку [] 
+// т.к. оставила эту перегрузку для возвращения
+// значения data а не константной ссылки на эл.
 template<class T>
 const T Array<T>::GetAt(int index) const
 {
+    // если индекс входит в диапазон
+    // элементов строчки
     if (index < size && index >= 0)
     {
+        // переменная для нахождения
+        // нужного индекса
         int size_buff = 0;
+        // переменная для пробега по строке
         Node<T>* buff = head;
 
+        // пока не будет достигнут
+        // определенный индекс
         while (size_buff != index)
         {
             size_buff++;
             buff = buff->next;
         }
 
+        // возвращаем найденное значение
         return buff->data;
     }
     else
@@ -214,24 +254,27 @@ const T Array<T>::GetAt(int index) const
     }
 }
 
-// вставка элемент на какой-либо индекс
+// вставка элемента на какой-либо индекс
 
 template<class T>
 void Array<T>::SetAt(int index, T elem)
 {
+    // также проверяем есть ли
+    // переданный индекс в диапазоне
     if (index < size && index >= 0)
     {
         int size_buff = 0;
         Node<T>* buff = head;
 
+        // находим его в цикле
         while (size_buff != index)
         {
             size_buff++;
             buff = buff->next;
         }
 
+        // изменяем значение по индексу
         buff->data = elem;
-        buff->full = 1;
     }
 }
 
@@ -243,17 +286,23 @@ int Array<T>::GetUpperBound()
     Node<T>* buff = head;
     int buff_indx = -1;
 
+    // пока не будет достигнута 
+    // граница заполненных элементов
     while (buff->next != nullptr && buff->full != 0)
     {
         buff_indx++;
         buff = buff->next;
     }
 
+    // в случае если там не стоит значение по умолчанию,
+    // метод возвращает -1 как обознгачение того, что
+    // в методе нет элементов которые отмечены как незаполенные
     if (buff->data != T())
     {
         return -1;
     }
 
+    // в другом случае возвращается индекс
     return buff_indx;
 }
 
@@ -262,19 +311,29 @@ int Array<T>::GetUpperBound()
 template<class T>
 void Array<T>::FreeExtra()
 {
+    // переменная с индексом высшей границы
     int UpperBound = GetUpperBound();
+    // переменная для пробега по элементам
     Node<T>* buff = head;
+    // переменная для удаления
+    // лишних элементов
     Node<T>* buff_deleteing;
 
+    // пробегаемся по массиву пока не найдем
+    // последний заполненный элемент
     for (int i = 0; i < UpperBound; i++)
     {
         buff = buff->next;
     }
 
+    // инициализируем переменную для удаления
     buff_deleteing = buff->next;
 
+    // обнуляем доступ к пустым элементам
     buff->next = nullptr;
 
+    // удаляем все пстые элемента
+    // кроме последнкго в цикле
     while (buff_deleteing->next != nullptr)
     {
         size--;
@@ -283,6 +342,7 @@ void Array<T>::FreeExtra()
         delete buff_deleteing->prev;
     }
 
+    // удаляем последний элемент
     delete buff_deleteing;
 }
 
@@ -291,18 +351,23 @@ void Array<T>::FreeExtra()
 template<class T>
 T Array<T>::operator[](int indx)
 {
+    // переменная для нахождения нужного индекса
     int size_buff = 0;
+    // переменная для пробега по массиву
     Node<T>* buff = head;
 
+    // ищем элемент под нужным индексом в цикле
     while (size_buff != indx)
     {
         size_buff++;
         buff = buff->next;
     }
 
+    // возвращаем значение нужного элемента
     return buff->data;
 }
 
+// та же самая перегрузка оператора, но константная
 template<class T>
 T Array<T>::operator[](int indx) const
 {
@@ -332,19 +397,32 @@ const Array<T>::Node<T>& Array<T>::Get_data()
 template<class T>
 void Array<T>::InsertAt(int indx, T value)
 {
+    // создаем новый элемент
     Node<T>* newnode = new Node<T>{ value };
+
+    // переменная для пробега по списку 
+    // с конца для каноничной вставки в
+    // визуальное начало строки
     Node<T>* needed_val = tail;
 
+    // ищем элемент под нужным индексом с помощью 
+    // цикла и переданной переменной индекса
     while (needed_val->prev->prev != nullptr && indx!=-2)
     {
         needed_val = needed_val->prev;
         indx--;
     }
+
+    // присваиваем значениям prev и next у
+    // созданной переменной, значению next
+    // предыдущего от вставленной и prev следующему
+    // от вставленной, новые значения указатели
     newnode->prev = needed_val;
     needed_val->next->prev = newnode;
     newnode->next = needed_val->next;
     needed_val->next = newnode;
 
+    // прибавляем размер
     size++;
 }
 
@@ -354,22 +432,30 @@ template<class T>
 void Array<T>::DeleteAt(int indx)
 {
     Node<T>* buff = head;
-    Node<T>* buff_indx = head;
 
+    // ищем нужный элемент
+    // в цикле
     for (int i = 0; i < indx - 1; i++)
     {
         buff = buff->next;
     }
 
+    // после нахождения перемещаем все
+    // последующие элементы после
+    // найденного на 1 назад
     for (int i = indx-1; i < size && buff->next != nullptr; i++)
     {
         buff->data = buff->next->data;
         buff = buff->next;
     }
 
+    // уменьшаем размер
     size--;
+    // изменяем значение хвоста
     tail = tail->prev;
+    // удаляем последнее обрезанное значение
     delete tail->next;
+    // отрезаем к нему доступ
     tail->next = nullptr;
 }
 
@@ -378,23 +464,31 @@ void Array<T>::DeleteAt(int indx)
 template<class T>
 void Array<T>::removeLast()
 {
+    // если строка пуста, цдаление
+    // не проивзодится
     if (head == nullptr)
     {
         cout << "Список пуст. Удаление невозможно.\n";
         return;
     }
+    // если элемент только 1 он удаляется
+    // и значения хвоста и головы обнуляются
     else if (head == tail)
     {
         delete head;
         head = tail = nullptr;
     }
+    // в случае если значений больше чем 1
     else
     {
+        // пеерменной присваивается значение хвоста
         Node* temp = tail;
 
+        // хвостовое значение перелдвигается
         tail = tail->prev;
+        // следующее его значение обнуляется
         tail->next = nullptr;
-
+        // удаляется урезанная переменная
         delete temp;
     }
 }
@@ -404,11 +498,14 @@ void Array<T>::removeLast()
 template<class T>
 void Array<T>::print() const
 {
+    // пеерменная для пробега по строке
     Node<T>* current = head;
 
     cout << '\n';
 
-    while (current != nullptr && current->full != 0)
+    // вывод в случае если элемент заплнен
+    // и не инициализирован значением по умолчанию
+    while (current != nullptr && current->full != 0 && current->data != T())
     {
         cout << current->data << " ";
         current = current->next;
@@ -422,8 +519,11 @@ bool Array<T>::search(T value) const
 {
     Node<T>* current = head;
 
+    // пробегаемся по списку с помощью цикла
     while (current != nullptr)
     {
+        // в случае если найден первый элемент
+        // удовлетворяющий условию, возвращаем true
         if (current->data == value)
         {
             return true;
@@ -432,6 +532,8 @@ bool Array<T>::search(T value) const
         current = current->next;
     }
 
+    // если ни 1 элемент не удовлетворил 
+    // условию в цикле, возвращаем false
     return false;
 }
 

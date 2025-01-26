@@ -25,7 +25,6 @@ private:
 
         Node() : data(0), full(false), next(nullptr), prev(nullptr) {}
         explicit Node(T1 data_P) : data(data_P), full(true), next(nullptr), prev(nullptr) {}
-        explicit Node(T1 data_P, bool full_P) : data(data_P), full(full_P), next(nullptr), prev(nullptr) {}
 
         friend Array;
     };
