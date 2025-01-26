@@ -265,7 +265,7 @@ void Array<T>::InsertAt(int indx, T value)
     Node<T>* newnode = new Node<T>{ value };
     Node<T>* needed_val = head;
 
-    if (needed_val->next->next != nullptr && indx != 0)
+    if (needed_val->next->next != nullptr && indx >-1)
     {
         needed_val = needed_val->next;
         indx--;
@@ -291,7 +291,7 @@ void Array<T>::DeleteAt(int indx)
         buff = buff->next;
     }
 
-    for (int i = indx; i < size && buff->next != nullptr; i++)
+    for (int i = indx-1; i < size && buff->next != nullptr; i++)
     {
         buff->data = buff->next->data;
         buff = buff->next;

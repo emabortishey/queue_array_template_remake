@@ -32,7 +32,7 @@ int main()
 
 	obj.print();
 
-	obj.RemoveAll();
+	obj.DeleteAt(4);
 
 	obj.print();
 
