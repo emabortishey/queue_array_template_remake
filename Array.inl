@@ -3,40 +3,91 @@
 // аппенд из ориг. двойных списков (не метод заданный в задании)
 //  (методы с маленькой буквы - предусмотренные списками, а с большой - из задания, кроме оператора)
 
+// метод добавленияэлемента, 1 перегрузка кторая 
+// принимает параметр с типом значения шаблона. 
+// (параметр по умолчанию есть, но при дублировании
+// его в синтаксисе при выносе метода в inl файл 
+// высвечивается ошибка, поэтому он только в синтаксисе хедера)
 template<class T>
 void Array<T>::append(T value)
 {
-    int counter = 0;
+    // воздание элемента с новым значением
     Node<T>* newNode = new Node<T>(value);
 
+    // в случае если строка пуста (тейл и хед не обозначены)
+    // и тейлу и хеду присваивается созданный элемент
     if (tail == nullptr)
     {
         head = tail = newNode;
+        // сайз приравнивается одному
         size = 1;
+
+        for (int i = 0; i < grow-1; i++)
+        {
+            // новый обьект пересоздается чтобы
+            // указатель при каждом присваивании был разным
+            // и все добавленные элементы не указывали на 1 ячейку
+
+            if (value == -664578)
+            {
+                Node<T>* newNode = new Node<T>{};
+            }
+            else
+            {
+                Node<T>* newNode = new Node<T>(value);
+            }
+
+            // в конец добавляется новый атрибут
+            // и хвостовое значение меняется
+            tail->next = newNode;
+            newNode->prev = tail;
+            tail = newNode;
+
+            // размер увеличивается на 1
+            size++;
+        }
     }
     else
     {
-        if (GetUpperBound() == size - 1)
+        // если при запросе верхней границы элементов с full!=0
+        // это значение равно size-1 то есть кол-ву элементов
+        // то новый элемент добавляется в конец
+        if (GetUpperBound() == -1)
         {
+            // цикл в котором добавляется такое кол-во элементов 
+            // с заданным значением которое равно атрибуту grow
             for (int i = 0; i < grow; i++)
             {
+                // новый обьект пересоздается чтобы
+                // указатель при каждом присваивании был разным
+                // и все добавленные элементы не указывали на 1 ячейку
                 Node<T>* newNode = new Node<T>(value);
 
+                // в конец добавляется новый атрибут
+                // и хвостовое значение меняется
                 tail->next = newNode;
                 newNode->prev = tail;
                 tail = newNode;
+
+                // размер увеличивается на 1
                 size++;
             }
         }
+        // в случае если в строке есть элементы
+        // у которых атрибут full = 0 то значение
+        // попадает в 1 первый такой атрибут
         else
         {
             Node<T>* Upper_bound = head;
+
             for (int i = 0; i < GetUpperBound(); i++)
             {
                 Upper_bound = Upper_bound->next;
             }
 
             Upper_bound->data = value;
+            Upper_bound->full = true;
+ 
         }
     }
 }
@@ -82,12 +133,11 @@ void Array<T>::SetSize(int size_P, int grow_P)
     }
     else
     {
-        int diff = size-size_P;
         int size_buff = 1;
         Node<T>* buff = head;
         Node<T>* buff_deleteing;
 
-        while (size_buff!=diff)
+        while (size_buff!= size_P)
         {
             size_buff++;
             buff = buff->next;
@@ -104,9 +154,9 @@ void Array<T>::SetSize(int size_P, int grow_P)
         }
 
         delete buff_deleteing;
-    }
 
-    size = size_P;
+        size = size_P;
+    }
 }
 
 // проверка на пустоту списка
@@ -193,10 +243,15 @@ int Array<T>::GetUpperBound()
     Node<T>* buff = head;
     int buff_indx = -1;
 
-    while (buff != nullptr && buff->full != 0)
+    while (buff->next != nullptr && buff->full != 0)
     {
         buff_indx++;
         buff = buff->next;
+    }
+
+    if (buff->data != T())
+    {
+        return -1;
     }
 
     return buff_indx;
@@ -268,7 +323,7 @@ T Array<T>::operator[](int indx) const
 template<class T>
 const Array<T>::Node<T>& Array<T>::Get_data()
 {
-    return head;
+    return *head;
 }
 
 // записывает на место какого-т индекса (т.к. а списках 
@@ -384,6 +439,7 @@ bool Array<T>::search(T value) const
 
 template<class T>
 Array<T>::~Array()
+
 {
     Node<T>* current = head;
 
