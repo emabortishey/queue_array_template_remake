@@ -248,6 +248,21 @@ T Array<T>::operator[](int indx)
     return buff->data;
 }
 
+template<class T>
+T Array<T>::operator[](int indx) const
+{
+    int size_buff = 0;
+    Node<T>* buff = head;
+
+    while (size_buff != indx)
+    {
+        size_buff++;
+        buff = buff->next;
+    }
+
+    return buff->data;
+}
+
 // возаращает неконстантную ссылку на начало списка
 
 template<class T>
