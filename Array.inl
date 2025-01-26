@@ -299,6 +299,7 @@ void Array<T>::DeleteAt(int indx)
 
     size--;
     tail = tail->prev;
+    delete tail->next;
     tail->next = nullptr;
 }
 
