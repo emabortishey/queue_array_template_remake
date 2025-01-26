@@ -9,10 +9,10 @@
 // его в синтаксисе при выносе метода в inl файл 
 // высвечивается ошибка, поэтому он только в синтаксисе хедера)
 template<class T>
-void Array<T>::append(T value)
+void Array<T>::append(T value, bool full_P)
 {
     // воздание элемента с новым значением
-    Node<T>* newNode = new Node<T>(value);
+    Node<T>* newNode = new Node<T>(value, full_P);
 
     // в случае если строка пуста (тейл и хед не обозначены)
     // и тейлу и хеду присваивается созданный элемент
@@ -28,7 +28,7 @@ void Array<T>::append(T value)
             // указатель при каждом присваивании был разным
             // и все добавленные элементы не указывали на 1 ячейку
 
-            Node<T>* newNode = new Node<T>(value);
+            Node<T>* newNode = new Node<T>(value, full_P);
 
             // в конец добавляется новый атрибут
             // и хвостовое значение меняется
@@ -54,7 +54,7 @@ void Array<T>::append(T value)
                 // новый обьект пересоздается чтобы
                 // указатель при каждом присваивании был разным
                 // и все добавленные элементы не указывали на 1 ячейку
-                Node<T>* newNode = new Node<T>(value);
+                Node<T>* newNode = new Node<T>(value, full_P);
 
                 // в конец добавляется новый атрибут
                 // и хвостовое значение меняется
@@ -71,15 +71,37 @@ void Array<T>::append(T value)
         // попадает в первый такой атрибут
         else
         {
-            Node<T>* Upper_bound = head;
-
-            for (int i = 0; i <= GetUpperBound(); i++)
+            if (full_P == true)
             {
-                Upper_bound = Upper_bound->next;
-            }
+                Node<T>* Upper_bound = head;
 
-            Upper_bound->data = value;
-            Upper_bound->full = true;
+                for (int i = 0; i < GetUpperBound(); i++)
+                {
+                    Upper_bound = Upper_bound->next;
+                }
+
+                Upper_bound->data = value;
+                Upper_bound->full = true;
+            }
+            else
+            {
+                for (int i = 0; i < grow; i++)
+                {
+                    // новый обьект пересоздается чтобы
+                    // указатель при каждом присваивании был разным
+                    // и все добавленные элементы не указывали на 1 ячейку
+                    Node<T>* newNode = new Node<T>(value, full_P);
+
+                    // в конец добавляется новый атрибут
+                    // и хвостовое значение меняется
+                    tail->next = newNode;
+                    newNode->prev = tail;
+                    tail = newNode;
+
+                    // размер увеличивается на 1
+                    size++;
+                }
+            }
  
         }
     }
@@ -113,6 +135,10 @@ int Array<T>::GetSize() const
 template<class T>
 void Array<T>::SetSize(int size_P, int grow_P)
 {
+    if (size == size_P)
+    {
+        throw SizeTheSame("\n\nSize that you want to set is equal to the current one.\n\n");
+    }
     // первым делом гроу изменяется в зависимости
     // с переданным параметром (даже если он был по умолчанию)
     grow = grow_P;
@@ -124,9 +150,10 @@ void Array<T>::SetSize(int size_P, int grow_P)
     {
         int diff = size_P - size;
 
-        for (int i = 0; i < diff; i++) 
+        while(diff!=0)
         {
-            append();
+            append(T(), false); 
+            diff--;
         }
     }
     // если переданный размер меньше чем нынешний
@@ -283,7 +310,7 @@ template<class T>
 int Array<T>::GetUpperBound()
 {
     Node<T>* buff = head;
-    int buff_indx = -1;
+    int buff_indx = 0;
 
     // пока не будет достигнута 
     // граница заполненных элементов
@@ -296,7 +323,7 @@ int Array<T>::GetUpperBound()
     // в случае если там не стоит значение по умолчанию,
     // метод возвращает -1 как обознгачение того, что
     // в методе нет элементов которые отмечены как незаполенные
-    if (buff->data != T())
+    if (buff->full!=false)
     {
         return -1;
     }
@@ -543,7 +570,7 @@ void Array<T>::print() const
 
     // вывод в случае если элемент заплнен
     // и не инициализирован значением по умолчанию
-    while (current != nullptr && current->full != 0 && current->data != T())
+    while (current != nullptr && current->full != false)
     {
         cout << current->data << " ";
         current = current->next;

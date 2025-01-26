@@ -12,3 +12,12 @@ public:
 
 	const virtual char* what() const override { return msg.c_str(); }
 };
+
+class SizeTheSame : public exception
+{
+	string msg;
+public:
+	SizeTheSame(const string msg_P) : msg{ msg_P } { }
+
+	const virtual char* what() const override { return msg.c_str(); }
+};
