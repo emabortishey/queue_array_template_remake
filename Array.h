@@ -14,6 +14,7 @@ private:
     Node<T>* head;
     Node<T>* tail;
     int size;
+    int grow;
 
     template<class T1>
     class Node {
@@ -31,7 +32,7 @@ private:
     };
 
 public:
-    Array() = default;
+    Array() : head{ nullptr }, tail{ nullptr }, grow{ 1 }, size{ 0 } { };
 
     void append(T value = T());
     void append(Array& obj);
@@ -44,7 +45,7 @@ public:
     void RemoveAll();
     const T GetAt(int index) const;
     void SetAt(int index, T elem);
-    int GetUpperBound() const;
+    int GetUpperBound();
     void FreeExtra();
     T operator[](int indx);
     Node<T>& Get_data();

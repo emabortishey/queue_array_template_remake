@@ -6,6 +6,7 @@
 template<class T>
 void Array<T>::append(T value)
 {
+    int counter = 0;
     Node<T>* newNode = new Node<T>(value);
 
     if (tail == nullptr)
@@ -15,10 +16,28 @@ void Array<T>::append(T value)
     }
     else
     {
-        tail->next = newNode;
-        newNode->prev = tail;
-        tail = newNode;
-        size++;
+        if (GetUpperBound() == size - 1)
+        {
+            for (int i = 0; i < grow; i++)
+            {
+                Node<T>* newNode = new Node<T>(value);
+
+                tail->next = newNode;
+                newNode->prev = tail;
+                tail = newNode;
+                size++;
+            }
+        }
+        else
+        {
+            Node<T>* Upper_bound = head;
+            for (int i = 0; i < GetUpperBound(); i++)
+            {
+                Upper_bound = Upper_bound->next;
+            }
+
+            Upper_bound->data = value;
+        }
     }
 }
 
@@ -29,13 +48,9 @@ void Array<T>::append(T value)
 template<class T>
 void Array<T>::append(Array& obj)
 {
-    T buff;
-
-    for (int i = 0; i<obj.size; i++)
+    for (int i = 0; i < obj.size; i++)
     {
-        buff = obj[i];
-        append(buff);
-        size++;
+        append(obj[i]);
     }
 }
 
@@ -150,12 +165,12 @@ void Array<T>::SetAt(int index, T elem)
 // возвращение самого верхнего индекса (только ячейки, созданные как заполненные)
 
 template<class T>
-int Array<T>::GetUpperBound() const
+int Array<T>::GetUpperBound()
 {
-    Node<T> buff = head;
+    Node<T>* buff = head;
     int buff_indx = -1;
 
-    while (buff->full != 0)
+    while (buff != nullptr && buff->full != 0)
     {
         buff_indx++;
         buff = buff->next;
@@ -211,30 +226,20 @@ Array<T>::Node<T>& Array<T>::Get_data()
 template<class T>
 void Array<T>::InsertAt(int indx, T value)
 {
-    Node<T>* newnode = new Node<T>{ tail->data };
-    tail->next = newnode;
-    newnode->prev = tail;
-    tail = newnode;
-    Node<T>* buff = tail;
-    Node<T>* buff_indx;
-    T buff_value;
+    Node<T>* newnode = new Node<T>{ value };
+    Node<T>* needed_val = head;
+
+    if (needed_val->next->next != nullptr && indx != 0)
+    {
+        needed_val = needed_val->next;
+        indx--;
+    }
+    newnode->prev = needed_val;
+    needed_val->next->prev = newnode;
+    newnode->next = needed_val->next;
+    needed_val->next = newnode;
+
     size++;
-
-    for (int i = 0; i < indx-1; i++)
-    {
-        buff = buff->prev;
-    }
-
-    buff_indx = buff;
-    buff = tail;
-
-    while( buff!=buff_indx && buff->prev!=nullptr )
-    {
-        buff->data = buff->prev->data;
-        buff = buff->prev;
-    }
-
-    buff_indx->data = value;
 }
 
 //удалить нужный индекс
@@ -294,12 +299,13 @@ void Array<T>::print() const
 {
     Node<T>* current = head;
 
+    cout << '\n';
+
     while (current != nullptr)
     {
         cout << current->data << " ";
         current = current->next;
     }
-    cout << endl;
 }
 
 // поиск массива и возвращение булевой переменной

@@ -6,7 +6,7 @@ int main()
 	// создание и инициализация 1 обьекта для тестов
 	Array<int> obj;
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		obj.append(i);
 	}
@@ -16,12 +16,17 @@ int main()
 
 	for (int i = 0; i < 4; i++)
 	{
-		obj2.append(i+4);
+		obj2.append(i);
 	}
 
 	// тестирование обьединения 
 
+	obj.print();
+	obj2.print();
+
 	obj.append(obj2);
+
+	obj.print();
 
 	// тестирование вставки числа 666 на индекс 4
 

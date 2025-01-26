@@ -1,20 +1,4 @@
 ﻿  Array.cpp
-  Queue.cpp
   Source.cpp
-C:\Users\fartb\source\repos\Project9\Array.inl(239,7): warning C4101: buff_value: неиспользованная локальная переменная
-  (компиляция исходного файла "Source.cpp")
-      C:\Users\fartb\source\repos\Project9\Array.inl(239,7):
-      контекст создания экземпляра шаблона (сначала самый старый)
-          C:\Users\fartb\source\repos\Project9\Source.cpp(7,13):
-          выполняется компиляция ссылки на экземпляр класс шаблон функции "Array<int>"
-          C:\Users\fartb\source\repos\Project9\Array.inl(232,1):
-          во время компиляции функции-члена класс шаблон "void Array<int>::InsertAt(int,T)"
-          with
-          [
-              T=int
-          ]
-              C:\Users\fartb\source\repos\Project9\Source.cpp(28,14):
-              см. первую ссылку на "Array<int>::InsertAt" в "main"
-  
   Создание кода...
   Project9.vcxproj -> C:\Users\fartb\source\repos\Project9\x64\Debug\Project9.exe
