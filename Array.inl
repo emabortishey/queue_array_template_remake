@@ -136,6 +136,8 @@ void Array<T>::RemoveAll()
     delete buff;
 
     head = tail = nullptr;
+
+    size = 0;
 }
 
 // возвращение значения по индексу (перегрузку оператора [] я сделала позже 
@@ -209,13 +211,26 @@ void Array<T>::FreeExtra()
 {
     int UpperBound = GetUpperBound();
     Node<T>* buff = head;
+    Node<T>* buff_deleteing;
 
     for (int i = 0; i < UpperBound; i++)
     {
         buff = buff->next;
     }
 
-    buff->next = nullptr; 
+    buff_deleteing = buff->next;
+
+    buff->next = nullptr;
+
+    while (buff_deleteing->next != nullptr)
+    {
+        size--;
+
+        buff_deleteing = buff_deleteing->next;
+        delete buff_deleteing->prev;
+    }
+
+    delete buff_deleteing;
 }
 
 // перегрузка оператора
