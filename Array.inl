@@ -278,11 +278,11 @@ template<class T>
 void Array<T>::InsertAt(int indx, T value)
 {
     Node<T>* newnode = new Node<T>{ value };
-    Node<T>* needed_val = head;
+    Node<T>* needed_val = tail;
 
-    if (needed_val->next->next != nullptr && indx >-1)
+    while (needed_val->prev->prev != nullptr && indx!=-2)
     {
-        needed_val = needed_val->next;
+        needed_val = needed_val->prev;
         indx--;
     }
     newnode->prev = needed_val;
