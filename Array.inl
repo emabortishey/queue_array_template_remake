@@ -28,14 +28,7 @@ void Array<T>::append(T value)
             // указатель при каждом присваивании был разным
             // и все добавленные элементы не указывали на 1 ячейку
 
-            if (value == -664578)
-            {
-                Node<T>* newNode = new Node<T>{};
-            }
-            else
-            {
-                Node<T>* newNode = new Node<T>(value);
-            }
+            Node<T>* newNode = new Node<T>(value);
 
             // в конец добавляется новый атрибут
             // и хвостовое значение меняется
@@ -193,6 +186,11 @@ bool Array<T>::IsEmpty() const
 template<class T>
 void Array<T>::RemoveAll()
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nIt's impossible to remove all elements. Array is empty.\n\n");
+    }
+
     // переменная для удаления
     Node<T>* buff = head;
 
@@ -397,6 +395,11 @@ const Array<T>::Node<T>& Array<T>::Get_data()
 template<class T>
 void Array<T>::InsertAt(int indx, T value)
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nInsertion on the asked index is impossible. Array is empty.\n\n");
+    }
+
     // создаем новый элемент
     Node<T>* newnode = new Node<T>{ value };
 
@@ -431,6 +434,11 @@ void Array<T>::InsertAt(int indx, T value)
 template<class T>
 void Array<T>::DeleteAt(int indx)
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nDeletion of the asked index is impossible. Array is empty.\n\n");
+    }
+
     Node<T>* buff = head;
 
     // ищем нужный элемент
@@ -468,12 +476,11 @@ void Array<T>::removeLast()
     // не проивзодится
     if (head == nullptr)
     {
-        cout << "Список пуст. Удаление невозможно.\n";
-        return;
+        throw ContaineerIsEmpty("\n\nDeletion of the last index is impossible. Array is empty.\n\n");
     }
     // если элемент только 1 он удаляется
     // и значения хвоста и головы обнуляются
-    else if (head == tail)
+    if (head == tail)
     {
         delete head;
         head = tail = nullptr;
@@ -498,6 +505,11 @@ void Array<T>::removeLast()
 template<class T>
 void Array<T>::print() const
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nPrinting array is impossible. It's empty.\n\n");
+    }
+
     // пеерменная для пробега по строке
     Node<T>* current = head;
 
@@ -517,6 +529,11 @@ void Array<T>::print() const
 template<class T>
 bool Array<T>::search(T value) const
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nNo point to search, i guess. Array is empty.\n\n");
+    }
+
     Node<T>* current = head;
 
     // пробегаемся по списку с помощью цикла
@@ -541,7 +558,6 @@ bool Array<T>::search(T value) const
 
 template<class T>
 Array<T>::~Array()
-
 {
     Node<T>* current = head;
 

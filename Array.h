@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "exceptionss.h"
 
 using namespace std;
 

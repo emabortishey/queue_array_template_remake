@@ -128,11 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Array.cpp" />
+    <ClCompile Include="exceptionss.cpp" />
     <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
+    <ClInclude Include="exceptionss.h" />
     <ClInclude Include="Queue.h" />
   </ItemGroup>
   <ItemGroup>

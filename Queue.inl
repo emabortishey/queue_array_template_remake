@@ -34,13 +34,12 @@ void Queue<T>::removeLast()
     // список пуст
     if (head == nullptr)
     {
-        cout << "—писок пуст. ”даление невозможно.\n";
-        return;
+        throw ContaineerIsEmpty("\n\nDeletion of the last index is impossible. Queue is empty.\n\n");
     }
     // если в списке 1 элемент, он
     // удал€етс€ и хвостовой и
     // голоной атрибуты обнул€ютс€
-    else if (head == tail)
+    if (head == tail)
     {
         delete head;
         head = tail = nullptr;
@@ -65,6 +64,11 @@ void Queue<T>::removeLast()
 template<class T>
 void Queue<T>::print() const
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nPrinting queue is impossible. It's empty.\n\n");
+    }
+
     // переменна€ дл€ пробега по элементам
     Node<T>* current = head;
 
@@ -82,6 +86,11 @@ void Queue<T>::print() const
 template<class T>
 bool Queue<T>::search(T value) const
 {
+    if (head == nullptr)
+    {
+        throw ContaineerIsEmpty("\n\nNo point to search, i guess. Array is empty.\n\n");
+    }
+
     // переменна€ дл€ пробега по очереди
     Node<T>* current = head;
 
