@@ -67,8 +67,9 @@ int Array<T>::GetSize() const
 // метод увеличения/уменьшения размера на число гроу с каждым шагом
 
 template<class T>
-void Array<T>::SetSize(int size_P, int grow)
+void Array<T>::SetSize(int size_P, int grow_P)
 {
+    grow = grow_P;
 
     if (size_P>size)
     {
@@ -76,10 +77,7 @@ void Array<T>::SetSize(int size_P, int grow)
 
         for (int i = 0; i < diff; i++) 
         {
-            for (int j = 0; j < grow; j++)
-            {
-                append(); 
-            }
+            append();
         }
     }
     else
@@ -253,7 +251,7 @@ T Array<T>::operator[](int indx)
 // возаращает неконстантную ссылку на начало списка
 
 template<class T>
-Array<T>::Node<T>& Array<T>::Get_data()
+const Array<T>::Node<T>& Array<T>::Get_data()
 {
     return head;
 }
