@@ -99,11 +99,13 @@ void Array<T>::SetSize(int size_P, int grow)
 
         buff->next = nullptr;
 
-        while (buff_deleteing != 0)
+        while (buff_deleteing->next != nullptr)
         {
             buff_deleteing = buff_deleteing->next;
             delete buff_deleteing->prev;
         }
+
+        delete buff_deleteing;
     }
 
     size = size_P;
@@ -122,6 +124,17 @@ bool Array<T>::IsEmpty() const
 template<class T>
 void Array<T>::RemoveAll()
 {
+    Node<T>* buff = head;
+
+    while (buff->next != nullptr)
+    {
+        buff = buff->next;
+
+        delete buff->prev;
+    }
+
+    delete buff;
+
     head = tail = nullptr;
 }
 
